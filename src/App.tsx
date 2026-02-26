@@ -2,7 +2,7 @@ import { useState } from "react";
 import { LexicAnalyzer } from "./core/lexic-analyzer";
 import { LexicResultTable } from "./presentation/lexic-analysis/lexic-result-table/lexic-result-table";
 import type { ILexicAnalysisResult } from "./interfaces/lexic-analysis/lexic-analysis-result";
-import { Input } from "./presentation/components/ui/input";
+import { CodeTextarea } from "./presentation/components/ui/code-textarea";
 
 const calculatorLexicAnalyzer = new LexicAnalyzer({
   alphabet: [
@@ -16,7 +16,6 @@ const calculatorLexicAnalyzer = new LexicAnalyzer({
     { regex: /^\)$/, value: "CLOSE_PARENTHESIS", isSeparator: true },
     { regex: /^ +$/, value: "WHITESPACE", isSeparator: true },
     { regex: /^\n+$/, value: "NEWLINE", isSeparator: true },
-    { regex: /^\n+$/, value: "NEWLINE", isSeparator: true },
   ],
 });
 
@@ -27,7 +26,7 @@ function App() {
     errors: [],
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newInput = e.target.value;
     setInput(newInput);
 
@@ -39,13 +38,10 @@ function App() {
     <main className="min-h-dvh p-10 bg-background">
       <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-8 lg:grid-cols-[320px_1fr]">
         <form action="" className="space-y-3">
-          <div className="text-sm font-medium text-muted-foreground">Expression</div>
-          <Input
-            type="text"
-            value={input}
-            onChange={handleInputChange}
-            placeholder="Ex: (12 + 3) / 4"
-          />
+          <div className="text-sm font-medium text-muted-foreground">
+            Expression
+          </div>
+          <CodeTextarea value={input} onChange={handleInputChange} />
         </form>
         <LexicResultTable
           lexemes={lexicResult.lexemes}
