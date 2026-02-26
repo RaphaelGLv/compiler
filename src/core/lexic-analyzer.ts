@@ -17,11 +17,21 @@ export class LexicAnalyzer implements ILexicAnalyzer {
             lexemes: [],
             errors: []
         };
+        
         let lastLexemeIndexAdded = 0;
+        let columnIndex = 0;
+        let lineIndex = 0;
         
         for (let i = 0; i < input.length; i++) {
+            columnIndex++;
+            
             const char = input[i];
             const nextChar = input[i + 1];
+
+            if (char === "\n") {
+                lineIndex++;
+                columnIndex = 0;
+            }
 
             const charIsSeparator = this.alphabet.some((token) => 
                 token.isSeparator && token.regex.test(char));
@@ -31,20 +41,20 @@ export class LexicAnalyzer implements ILexicAnalyzer {
 
             if (nextCharIsSeparator || (!nextCharIsSeparator && charIsSeparator)) {
                 const lexemeValue = input.substring(lastLexemeIndexAdded, i + 1);
-                this.addLexeme(result, lexemeValue, [lastLexemeIndexAdded, i + 1]);
+                this.addLexeme(result, lexemeValue, [lineIndex, columnIndex]);
                 lastLexemeIndexAdded = i + 1;
             }
         }
         
         if (lastLexemeIndexAdded < input.length) {
             const lexemeValue = input.substring(lastLexemeIndexAdded);
-            this.addLexeme(result, lexemeValue, [lastLexemeIndexAdded, input.length]);
+            this.addLexeme(result, lexemeValue, [lineIndex, columnIndex]);
         }
 
         return result;
     }
 
-    private addLexeme(lexicAnalysisResult: ILexicAnalysisResult, value: string, columnGap: ILexeme['position']['columnGap']) {
+    private addLexeme(lexicAnalysisResult: ILexicAnalysisResult, value: string, position: ILexeme['position']) {
         const lexemeToken = this.alphabet.find((token) => 
             token.regex.test(value));
 
@@ -52,9 +62,7 @@ export class LexicAnalyzer implements ILexicAnalyzer {
             lexicAnalysisResult.errors.push({
                 reason: 'Unrecognized token',
                 value,
-                position: {
-                    columnGap
-                }
+                position,
             });
             return;
         }
@@ -65,10 +73,8 @@ export class LexicAnalyzer implements ILexicAnalyzer {
         lexicAnalysisResult.lexemes.push({
             tokenValue:lexemeToken.value,
             value,
-            position: {
-                columnGap,
-                tokenIndex: lexemeTokenIndex
-            }
+            position,
+            tokenIndex: lexemeTokenIndex
         });
     }
 }

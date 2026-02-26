@@ -12,10 +12,10 @@ import {
 export function LexicResultTable({ lexemes, errors }: ILexicAnalysisResult) {
   const list: (ILexeme | ILexemeError)[] = [...lexemes, ...errors].sort(
     (a, b) => {
-      if (a.position.columnGap[0] === b.position.columnGap[0]) {
-        return a.position.columnGap[0] - b.position.columnGap[0];
+      if (a.position[0] === b.position[0]) {
+        return a.position[1] - b.position[1];
       }
-      return a.position.columnGap[0] - b.position.columnGap[0];
+      return a.position[0] - b.position[0];
     },
   );
 
@@ -38,10 +38,10 @@ export function LexicResultTable({ lexemes, errors }: ILexicAnalysisResult) {
         {isLexemeError(item) ? item.reason : item.tokenValue}
       </TableCell>
       <TableCell className="text-muted-foreground">
-        {item.position.columnGap.join(" : ")}
+        {item.position.join(" : ")}
       </TableCell>
       <TableCell className="text-muted-foreground">
-        {isLexemeError(item) ? "" : item.position.tokenIndex}
+        {isLexemeError(item) ? "" : item.tokenIndex}
       </TableCell>
     </TableRow>
   );
@@ -58,7 +58,7 @@ export function LexicResultTable({ lexemes, errors }: ILexicAnalysisResult) {
             Token
           </TableHead>
           <TableHead className="font-bold uppercase tracking-wide text-center">
-            Position (Start Column : End Column)
+            Position
           </TableHead>
           <TableHead className="font-bold uppercase tracking-wide text-center">
             Token Index

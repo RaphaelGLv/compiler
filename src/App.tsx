@@ -14,7 +14,9 @@ const calculatorLexicAnalyzer = new LexicAnalyzer({
     { regex: /^\/$/, value: "DIVIDE_OPERATOR", isSeparator: true },
     { regex: /^\($/, value: "OPEN_PARENTHESIS", isSeparator: true },
     { regex: /^\)$/, value: "CLOSE_PARENTHESIS", isSeparator: true },
-    { regex: /^\s+$/, value: "WHITESPACE", isSeparator: true },
+    { regex: /^ +$/, value: "WHITESPACE", isSeparator: true },
+    { regex: /^\n+$/, value: "NEWLINE", isSeparator: true },
+    { regex: /^\n+$/, value: "NEWLINE", isSeparator: true },
   ],
 });
 
