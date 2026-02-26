@@ -30,6 +30,7 @@ export function LexicResultTable({ lexemes, errors }: ILexicAnalysisResult) {
       key={index}
       className={isLexemeError(item) ? "bg-destructive/5" : "hover:bg-muted/50"}
     >
+      <TableCell className="text-muted-foreground">{index + 1}</TableCell>
       <TableCell className="py-3 font-medium">{item.value}</TableCell>
       <TableCell
         className={isLexemeError(item) ? "text-destructive" : "text-foreground"}
@@ -49,6 +50,7 @@ export function LexicResultTable({ lexemes, errors }: ILexicAnalysisResult) {
     <Table className="w-full overflow-hidden rounded-xl border bg-card shadow-sm text-center text-xs">
       <TableHeader className="bg-muted/60">
         <TableRow>
+          <TableHead />
           <TableHead className="font-bold uppercase tracking-wide text-center">
             Lexeme
           </TableHead>
