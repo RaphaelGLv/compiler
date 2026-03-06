@@ -1,12 +1,13 @@
 import type { ILexicAnalysisResult } from "./lexic-analysis-result";
 import type { IToken } from "./token";
 
-export interface ILexicAnalyzer extends ILexicAnalyzerConstructor, ILexicAnalyzerMethods {}
+export interface ILexicAnalyzer
+  extends ILexicAnalyzerConstructor, ILexicAnalyzerMethods {}
 
 export interface ILexicAnalyzerConstructor {
-    alphabet: IToken[];
+  alphabet: IToken[];
 }
 
 interface ILexicAnalyzerMethods {
-    analyze(input: string): ILexicAnalysisResult;
+  analyze(input: string): ILexicAnalysisResult;
 }

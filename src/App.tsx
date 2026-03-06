@@ -4,18 +4,108 @@ import { LexicResultTable } from "./presentation/lexic-analysis/lexic-result-tab
 import type { ILexicAnalysisResult } from "./interfaces/lexic-analysis/lexic-analysis-result";
 import { CodeTextarea } from "./presentation/components/ui/code-textarea";
 
-const calculatorLexicAnalyzer = new LexicAnalyzer({
+const lalgLexicAnalyzer = new LexicAnalyzer({
   alphabet: [
-    { regex: /^[0-9]+$/, value: "INTEGER_NUMBER", isSeparator: false },
-    { regex: /^[0-9]+\.[0-9]+$/, value: "REAL_NUMBER", isSeparator: false },
-    { regex: /^\+$/, value: "PLUS_OPERATOR", isSeparator: true },
-    { regex: /^-$/, value: "MINUS_OPERATOR", isSeparator: true },
-    { regex: /^\*$/, value: "MULTIPLY_OPERATOR", isSeparator: true },
-    { regex: /^\/$/, value: "DIVIDE_OPERATOR", isSeparator: true },
-    { regex: /^\($/, value: "OPEN_PARENTHESIS", isSeparator: true },
-    { regex: /^\)$/, value: "CLOSE_PARENTHESIS", isSeparator: true },
-    { regex: /^ +$/, value: "WHITESPACE", isSeparator: true },
-    { regex: /^\n+$/, value: "NEWLINE", isSeparator: true },
+    {
+      regex: /^ $/,
+      value: "WHITESPACE",
+      config: { isSeparator: true, shouldBeIgnored: true },
+    },
+    {
+      regex: /^\n$/,
+      value: "NEWLINE",
+      config: {
+        isSeparator: true,
+        shouldBeIgnored: true,
+        comment: "INLINE_END",
+      },
+    },
+
+    {
+      regex: /^:=$/,
+      value: "ASSIGNMENT_OPERATOR",
+    },
+    { regex: /^do$/, value: "DO_OPERATOR" },
+    { regex: /^or$/, value: "OR_OPERATOR" },
+    { regex: /^and$/, value: "AND_OPERATOR" },
+    { regex: /^not$/, value: "NOT_OPERATOR" },
+    { regex: /^div$/, value: "DIV_OPERATOR" },
+    { regex: /^=$/, value: "EQUAL_OPERATOR" },
+    {
+      regex: /^<>$/,
+      value: "NOT_EQUAL_OPERATOR",
+    },
+    {
+      regex: /^<=$/,
+      value: "LESS_EQUAL_OPERATOR",
+    },
+    {
+      regex: /^>=$/,
+      value: "GREATER_EQUAL_OPERATOR",
+    },
+    { regex: /^<$/, value: "LESS_OPERATOR" },
+    { regex: /^>$/, value: "GREATER_OPERATOR" },
+
+    {
+      regex: /^\t$/,
+      value: "TAB",
+      config: { isSeparator: true, shouldBeIgnored: true },
+    },
+    { regex: /^;$/, value: "SEMICOLON", config: { isSeparator: true } },
+    { regex: /^:$/, value: "COLON" },
+    { regex: /^\($/, value: "LEFT_PARENTHESIS", config: { isSeparator: true } },
+    {
+      regex: /^\)$/,
+      value: "RIGHT_PARENTHESIS",
+      config: { isSeparator: true },
+    },
+    { regex: /^\[$/, value: "LEFT_BRACKET", config: { isSeparator: true } },
+    { regex: /^\]$/, value: "RIGHT_BRACKET", config: { isSeparator: true } },
+
+    {
+      regex: /^\/\/.*$/,
+      value: "LINE_COMMENT",
+      config: { comment: "INLINE_START" },
+    },
+    {
+      regex: /^{$/,
+      value: "LEFT_BRACE",
+      config: { isSeparator: true, comment: "MULTILINE_START" },
+    },
+    {
+      regex: /^}$/,
+      value: "RIGHT_BRACE",
+      config: { isSeparator: true, comment: "MULTILINE_END" },
+    },
+
+    { regex: /^program$/, value: "PROGRAM_KEYWORD" },
+    { regex: /^begin$/, value: "BEGIN_KEYWORD" },
+    { regex: /^end$/, value: "END_KEYWORD" },
+    { regex: /^procedure$/, value: "PROCEDURE_KEYWORD" },
+    { regex: /^var$/, value: "VAR_KEYWORD" },
+    { regex: /^if$/, value: "IF_KEYWORD" },
+    { regex: /^then$/, value: "THEN_KEYWORD" },
+    { regex: /^else$/, value: "ELSE_KEYWORD" },
+    { regex: /^while$/, value: "WHILE_KEYWORD" },
+    { regex: /^read$/, value: "READ_KEYWORD" },
+    { regex: /^write$/, value: "WRITE_KEYWORD" },
+
+    { regex: /^(\+)$/, value: "ADD_OPERATOR" },
+    { regex: /^(-)$/, value: "SUB_OPERATOR" },
+    { regex: /^(\*)$/, value: "MUL_OPERATOR" },
+
+    { regex: /^int$/, value: "INT_TYPE" },
+    { regex: /^boolean$/, value: "BOOLEAN_TYPE" },
+
+    { regex: /^true$/, value: "TRUE_LITERAL" },
+    { regex: /^false$/, value: "FALSE_LITERAL" },
+    { regex: /^[0-9]+\.[0-9]+$/, value: "REAL_LITERAL" },
+    { regex: /^[0-9]+$/, value: "INTEGER_LITERAL" },
+
+    {
+      regex: /^[a-zA-Z_][a-zA-Z0-9_]*$/,
+      value: "IDENTIFIER",
+    },
   ],
 });
 
@@ -26,11 +116,12 @@ function App() {
     errors: [],
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newInput = e.target.value;
-    setInput(newInput);
+  const handleInputChange = (value: string) => {
+    const cleanedValue = value.replace(/\r\n/g, "\n");
 
-    const result = calculatorLexicAnalyzer.analyze(newInput);
+    setInput(cleanedValue);
+
+    const result = lalgLexicAnalyzer.analyze(cleanedValue);
     setLexicResult(result);
   };
 
@@ -41,7 +132,11 @@ function App() {
           <div className="text-sm font-medium text-muted-foreground">
             Expression
           </div>
-          <CodeTextarea value={input} onChange={handleInputChange} />
+          <CodeTextarea
+            alphabet={lalgLexicAnalyzer.alphabet}
+            value={input}
+            onChange={handleInputChange}
+          />
         </form>
         <LexicResultTable
           lexemes={lexicResult.lexemes}

@@ -47,25 +47,29 @@ export function LexicResultTable({ lexemes, errors }: ILexicAnalysisResult) {
   );
 
   return (
-    <Table className="w-full overflow-hidden rounded-xl border bg-card shadow-sm text-center text-xs">
-      <TableHeader className="bg-muted/60">
-        <TableRow>
-          <TableHead />
-          <TableHead className="font-bold uppercase tracking-wide text-center">
-            Lexeme
-          </TableHead>
-          <TableHead className="font-bold uppercase tracking-wide text-center">
-            Token
-          </TableHead>
-          <TableHead className="font-bold uppercase tracking-wide text-center">
-            Position
-          </TableHead>
-          <TableHead className="font-bold uppercase tracking-wide text-center">
-            Token Index
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>{list.map((item, index) => renderRow(item, index))}</TableBody>
-    </Table>
+    <div className="relative h-fit max-h-full w-full overflow-auto rounded-xl border bg-card shadow-sm">
+      <Table className="w-full text-center text-xs">
+        <TableHeader className="bg-muted/60">
+          <TableRow>
+            <TableHead />
+            <TableHead className="font-bold uppercase tracking-wide text-center">
+              Lexeme
+            </TableHead>
+            <TableHead className="font-bold uppercase tracking-wide text-center">
+              Token
+            </TableHead>
+            <TableHead className="font-bold uppercase tracking-wide text-center">
+              Position
+            </TableHead>
+            <TableHead className="font-bold uppercase tracking-wide text-center">
+              Token Index
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {list.map((item, index) => renderRow(item, index))}
+        </TableBody>
+      </Table>
+    </div>
   );
 }
