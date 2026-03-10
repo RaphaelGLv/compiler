@@ -59,7 +59,7 @@ export class LexicAnalyzer implements ILexicAnalyzer {
         result.errors.push({
           value,
           position: [line + 1, column + 1],
-          reason: "Invalid lexeme",
+          reason: "Unrecognized token",
         });
         continue;
       }
