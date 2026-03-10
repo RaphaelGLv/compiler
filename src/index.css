@@ -156,3 +156,30 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .minimal-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--muted-foreground) var(--muted);
+  }
+
+  .minimal-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .minimal-scrollbar::-webkit-scrollbar-track {
+    background: var(--muted);
+    border-radius: 9999px;
+  }
+
+  .minimal-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--muted-foreground);
+    border: 2px solid var(--muted);
+    border-radius: 9999px;
+  }
+
+  .minimal-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+  }
+}

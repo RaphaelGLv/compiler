@@ -47,21 +47,24 @@ export function LexicResultTable({ lexemes, errors }: ILexicAnalysisResult) {
   );
 
   return (
-    <div className="relative h-fit max-h-full w-full overflow-auto rounded-xl border bg-card shadow-sm">
-      <Table className="w-full text-center text-xs">
-        <TableHeader className="bg-muted/60">
+    <div className="relative h-144 w-full overflow-hidden rounded-xl border bg-card shadow-sm box-border">
+      <Table
+        className="w-full border-separate border-spacing-0 text-center text-xs"
+        containerClassName="minimal-scrollbar h-full overflow-y-auto"
+      >
+        <TableHeader className="bg-muted">
           <TableRow>
-            <TableHead />
-            <TableHead className="font-bold uppercase tracking-wide text-center">
+            <TableHead className="sticky top-0 z-10 bg-muted" />
+            <TableHead className="sticky top-0 z-10 bg-muted font-bold uppercase tracking-wide text-center">
               Lexeme
             </TableHead>
-            <TableHead className="font-bold uppercase tracking-wide text-center">
+            <TableHead className="sticky top-0 z-10 bg-muted font-bold uppercase tracking-wide text-center">
               Token
             </TableHead>
-            <TableHead className="font-bold uppercase tracking-wide text-center">
+            <TableHead className="sticky top-0 z-10 bg-muted font-bold uppercase tracking-wide text-center">
               Position
             </TableHead>
-            <TableHead className="font-bold uppercase tracking-wide text-center">
+            <TableHead className="sticky top-0 z-10 bg-muted font-bold uppercase tracking-wide text-center">
               Token Index
             </TableHead>
           </TableRow>
