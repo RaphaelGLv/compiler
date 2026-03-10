@@ -11,4 +11,8 @@ export interface ITokenConfig {
   isSeparator?: boolean;
   shouldBeIgnored?: boolean;
   comment?: TokenCommentType;
+  rules?: Array<{
+    testFunction: (value: string) => boolean;
+    errorMessage: string;
+  }>;
 }

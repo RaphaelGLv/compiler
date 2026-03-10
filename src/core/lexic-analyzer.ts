@@ -81,12 +81,26 @@ export class LexicAnalyzer implements ILexicAnalyzer {
         }
 
         if (!token.config?.shouldBeIgnored) {
-          result.lexemes.push({
-            tokenValue: token.value,
-            value,
-            position: [line + 1, column + 1],
-            tokenIndex: this.alphabet.indexOf(token),
+          let hasAnyError = false;
+
+          token.config?.rules?.forEach((rule) => {
+            if (!rule.testFunction(value)) {
+              hasAnyError = true;
+              result.errors.push({
+                position: [line + 1, column + 1],
+                value,
+                reason: rule.errorMessage,
+              });
+            }
           });
+
+          if (!hasAnyError)
+            result.lexemes.push({
+              tokenValue: token.value,
+              value,
+              position: [line + 1, column + 1],
+              tokenIndex: this.alphabet.indexOf(token),
+            });
         }
       }
     }

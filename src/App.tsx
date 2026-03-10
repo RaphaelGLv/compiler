@@ -105,6 +105,16 @@ const lalgLexicAnalyzer = new LexicAnalyzer({
     {
       regex: /^[a-zA-Z_][a-zA-Z0-9_]*$/,
       value: "IDENTIFIER",
+      config: {
+        rules: [
+          {
+            testFunction: (value) => {
+              return value.length <= 10;
+            },
+            errorMessage: "Identifiers must be at most 10 characters long.",
+          },
+        ],
+      },
     },
   ],
 });
